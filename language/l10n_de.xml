@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+	<texts>
+		<text name="input_TOGGLE_BULK_FILL" text="Aktiviert/Deaktiviert"/>
+		<text name="action_BULK_FILL_ENABLED" text="Schüttgutfüllung Umschalten (Aktiviert)"/>
+		<text name="action_BULK_FILL_DISABLED" text="Schüttgutfüllung Umschalten (Deaktiviert)"/>
+		<text name="input_TOGGLE_FILL_SELECT" text="Elemente auswählen (Aktiviert/Deaktiviert)"/>
+		<text name="action_FILL_SELECT_ENABLED" text="Umschalten Füllelement Auswählen (Aktiviert)"/>
+		<text name="action_FILL_SELECT_DISABLED" text="Umschalten Füllelement Auswählen (Deaktiviert)"/>
+		<text name="input_BULK_FILL_CYCLE_FW" text="Zyklus Nächstes Element"/>
+		<text name="input_BULK_FILL_CYCLE_BW" text="Zyklus Vorheriges Element"/>
+		<text name="action_BULK_FILL_CYCLE_FW" text="Zyklus Nächstes Element"/>
+		<text name="action_BULK_FILL_CYCLE_BW" text="Zyklus Vorheriges Element"/>
+	</texts>
+</l10n>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+	<texts>
+		<text name="input_TOGGLE_BULK_FILL" text="Abilitato/Disabilitato"/>
+		<text name="action_BULK_FILL_ENABLED" text="Riempimento Materiale Sfuso (Abilitato)"/>
+		<text name="action_BULK_FILL_DISABLED" text="Riempimento Materiale Sfuso (Disabilitato)"/>
+		<text name="input_TOGGLE_FILL_SELECT" text="Seleziona Elementi (Abilitato/Disabilitato)"/>
+		<text name="action_FILL_SELECT_ENABLED" text="Seleziona Riempimento (Abilitato)"/>
+		<text name="action_FILL_SELECT_DISABLED" text="Seleziona Riempimento (Disabilitato)"/>
+		<text name="input_BULK_FILL_CYCLE_FW" text="Ciclo Prossimo Elemento"/>
+		<text name="input_BULK_FILL_CYCLE_BW" text="Ciclo Elemento Precedente"/>
+		<text name="action_BULK_FILL_CYCLE_FW" text="Ciclo Prossimo Elemento"/>
+		<text name="action_BULK_FILL_CYCLE_BW" text="Ciclo Elemento Precedente"/>
+	</texts>
+</l10n>

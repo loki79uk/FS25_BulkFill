@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+	<texts>
+		<text name="input_TOGGLE_BULK_FILL" text="Activation/Désactivation Du Basculement"/>
+		<text name="action_BULK_FILL_ENABLED" text="Basculer Le Remplissage En Vrac (Activé)"/>
+		<text name="action_BULK_FILL_DISABLED" text="Basculer Le Remplissage En Vrac (Handicapé)"/>
+		<text name="input_TOGGLE_FILL_SELECT" text="Sélectionner Les Éléments (Activés/Désactivés)"/>
+		<text name="action_FILL_SELECT_ENABLED" text="Basculer L'élément De Remplissage (Activé)"/>
+		<text name="action_FILL_SELECT_DISABLED" text="Basculer L'Élément De Remplissage (Désactivé)"/>
+		<text name="input_BULK_FILL_CYCLE_FW" text="Cycle Point Suivant"/>
+		<text name="input_BULK_FILL_CYCLE_BW" text="Cycle Point Précédent"/>
+		<text name="action_BULK_FILL_CYCLE_FW" text="Cycle Point Suivant"/>
+		<text name="action_BULK_FILL_CYCLE_BW" text="Cycle Point Précédent"/>
+	</texts>
+</l10n>

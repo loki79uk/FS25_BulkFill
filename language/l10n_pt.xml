@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+	<texts>
+		<text name="input_TOGGLE_BULK_FILL" text="Enabled/Disabled"/>
+		<text name="action_BULK_FILL_ENABLED" text="Toggle Bulk Fill (Enabled)"/>
+		<text name="action_BULK_FILL_DISABLED" text="Toggle Bulk Fill (Disabled)"/>
+		<text name="input_TOGGLE_FILL_SELECT" text="Select Items (Enabled/Disabled)"/>
+		<text name="action_FILL_SELECT_ENABLED" text="Toggle Select Fill Item (Enabled)"/>
+		<text name="action_FILL_SELECT_DISABLED" text="Toggle Select Fill Item (Disabled)"/>
+		<text name="input_BULK_FILL_CYCLE_FW" text="Cycle Next Item"/>
+		<text name="input_BULK_FILL_CYCLE_BW" text="Cycle Previous Item"/>
+		<text name="action_BULK_FILL_CYCLE_FW" text="Cycle Next Item"/>
+		<text name="action_BULK_FILL_CYCLE_BW" text="Cycle Previous Item"/>
+	</texts>
+</l10n>

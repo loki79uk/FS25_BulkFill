@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+	<texts>
+		<text name="input_TOGGLE_BULK_FILL" text="вкл/откл"/>
+		<text name="action_BULK_FILL_ENABLED" text="Массовое Заполнение (включено)"/>
+		<text name="action_BULK_FILL_DISABLED" text="Массовое Заполнение (отключено)"/>
+		<text name="input_TOGGLE_FILL_SELECT" text="Выбор элемента заполнения (вкл/откл)"/>
+		<text name="action_FILL_SELECT_ENABLED" text="Выбор элемента заполнения (включено)"/>
+		<text name="action_FILL_SELECT_DISABLED" text="Выбор элемента заполнения (отключено)"/>
+		<text name="input_BULK_FILL_CYCLE_FW" text="Циклично следующий элемент"/>
+		<text name="input_BULK_FILL_CYCLE_BW" text="Циклично предыдущий элемент"/>
+		<text name="action_BULK_FILL_CYCLE_FW" text="Циклично следующий элемент"/>
+		<text name="action_BULK_FILL_CYCLE_BW" text="Циклично предыдущий элемент"/>
+	</texts>
+</l10n>

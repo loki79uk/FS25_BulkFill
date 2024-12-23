@@ -39,6 +39,16 @@ Caractéristiques:
 - Il est également possible de sélectionner le premier élément à partir duquel il faut commencer à remplir
 ]]>
 </fr>
+<it><![CDATA[Qualsiasi attrezzo ricaricabile (seminatrici, irroratrici o rimorchi) può ora "Riempire Materiale Sfuso" da più pallet o big-bags utilizzando un unico comando di riempimento, purché ci sia un'altra unità di riempimento corrispondente nel raggio.
+
+Caratteristiche:
+- Riempimento Materiale Sfuso consente il riempimento continuo da più pallet o big-bags
+- La capacità può essere commutata utilizzando il tasto "Inserisci", nel caso in cui sia necessario caricare un solo pallet
+- Lo stato commutato viene memorizzato indipendentemente per ciascun strumento quando si salva il gioco
+- Vengono visualizzati i livelli di riempimento e l'ordine delle fonti di riempimento disponibili
+- È anche possibile selezionare il primo elemento da cui iniziare a riempire
+]]>
+</it>
 <ru><![CDATA[Любые перезаправляемые инструменты (сеялки, опрыскиватели или прицепы) теперь могут 'Массово заполнятся' с нескольких поддонов или биг-бегов, используя команду заполнения только один раз, если в диапазоне есть другая соответствующая заполняющая единица.
 
 Особенности:
@@ -56,6 +66,8 @@ Caractéristiques:
 	<extraSourceFiles>
 		<sourceFile filename="register.lua" />
 	</extraSourceFiles>
+
+	<l10n filenamePrefix="language/l10n" />
 	
 	<actions>
 		<action name="TOGGLE_BULK_FILL" category="VEHICLE"/>
@@ -63,6 +75,7 @@ Caractéristiques:
 		<action name="BULK_FILL_CYCLE_FW" category="VEHICLE"/>
 		<action name="BULK_FILL_CYCLE_BW" category="VEHICLE"/>
 	</actions>
+
 	<inputBinding>
 		<actionBinding action="TOGGLE_BULK_FILL" >
 			<binding device="KB_MOUSE_DEFAULT" input="KEY_insert" />
@@ -77,70 +90,5 @@ Caractéristiques:
 			<binding device="KB_MOUSE_DEFAULT" input="KEY_leftbracket" />
 		</actionBinding>
 	</inputBinding>	
-	
-	<l10n>
-		<text name="input_TOGGLE_BULK_FILL">
-			<en>Enabled/Disabled</en>
-			<de>Aktiviert/Deaktiviert</de>
-			<fr>Activation/Désactivation Du Basculement</fr>
-			<ru>вкл/откл</ru>
-		</text>
-		<text name="action_BULK_FILL_ENABLED">
-			<en>Toggle Bulk Fill (Enabled)</en>
-			<de>Schüttgutfüllung Umschalten (Aktiviert)</de>
-			<fr>Basculer Le Remplissage En Vrac (Activé)</fr>
-			<ru>Массовое Заполнение (включено)</ru>
-		</text>
-		<text name="action_BULK_FILL_DISABLED">
-			<en>Toggle Bulk Fill (Disabled)</en>
-			<de>Schüttgutfüllung Umschalten (Deaktiviert)</de>
-			<fr>Basculer Le Remplissage En Vrac (Handicapé)</fr>
-			<ru>Массовое Заполнение (отключено)</ru>
-		</text>
-		
-		<text name="input_TOGGLE_FILL_SELECT">
-			<en>Select Items (Enabled/Disabled)</en>
-			<de>Elemente auswählen (Aktiviert/Deaktiviert)</de>
-			<fr>Sélectionner Les Éléments (Activés/Désactivés)</fr>
-			<ru>Выбор элемента заполнения (вкл/откл)</ru>
-		</text>
-		<text name="action_FILL_SELECT_ENABLED">
-			<en>Toggle Select Fill Item (Enabled)</en>
-			<de>Umschalten Füllelement Auswählen (Aktiviert)</de>
-			<fr>Basculer L'élément De Remplissage (Activé)</fr>
-			<ru>Выбор элемента заполнения (включено)</ru>
-		</text>
-		<text name="action_FILL_SELECT_DISABLED">
-			<en>Toggle Select Fill Item (Disabled)</en>
-			<de>Umschalten Füllelement Auswählen (Deaktiviert)</de>
-			<fr>Basculer L'Élément De Remplissage (Désactivé)</fr>
-			<ru>Выбор элемента заполнения (отключено)</ru>
-		</text>
-		
-		<text name="input_BULK_FILL_CYCLE_FW">
-			<en>Cycle Next Item</en>
-			<de>Zyklus Nächstes Element</de>
-			<fr>Cycle Point Suivant</fr>
-			<ru>Циклично следующий элемент</ru>
-		</text>
-		<text name="input_BULK_FILL_CYCLE_BW">
-			<en>Cycle Previous Item</en>
-			<de>Zyklus Vorheriges Element</de>
-			<fr>Cycle Point Précédent</fr>
-			<ru>Циклично предыдущий элемент</ru>
-		</text>
-		<text name="action_BULK_FILL_CYCLE_FW">
-			<en>Cycle Next Item</en>
-			<de>Zyklus Nächstes Element</de>
-			<fr>Cycle Point Suivant</fr>
-			<ru>Циклично следующий элемент</ru>
-		</text>
-		<text name="action_BULK_FILL_CYCLE_BW">
-			<en>Cycle Previous Item</en>
-			<de>Zyklus Vorheriges Element</de>
-			<fr>Cycle Point Précédent</fr>
-			<ru>Циклично предыдущий элемент</ru>
-		</text>
-		
-	</l10n>
+
 </modDesc>
