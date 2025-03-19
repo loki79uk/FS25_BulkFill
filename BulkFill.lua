@@ -22,8 +22,7 @@ BulkFill.UNSELECTED_CB  = { 1.0, 1.0, 1.0, 0.3 }
 
 function BulkFill.prerequisitesPresent(specializations)
 	return  SpecializationUtil.hasSpecialization(FillUnit, specializations) and
-			SpecializationUtil.hasSpecialization(FillVolume, specializations) and
-			SpecializationUtil.hasSpecialization(Cover, specializations)
+			SpecializationUtil.hasSpecialization(FillVolume, specializations)
 end
 
 function BulkFill.registerEventListeners(vehicleType)
@@ -485,8 +484,12 @@ FillActivatable.run = Utils.overwrittenFunction(FillActivatable.run, BulkFill.Fi
 -- NETWORK EVENTS:
 function BulkFill:openCover(myState, noEventSend)
 	--print("OPENING COVER: " .. myState)
-	self:setCoverState(myState)
-	self.spec_cover.isStateSetAutomatically = true
+	if self.setCoverState then
+		self:setCoverState(myState)
+	end
+	if self.spec_cover then
+		self.spec_cover.isStateSetAutomatically = true
+	end
 
 	if noEventSend == nil or noEventSend == false then
 		if g_server ~= nil then

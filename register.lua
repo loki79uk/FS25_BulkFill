@@ -8,8 +8,7 @@ TypeManager.validateTypes = Utils.appendedFunction(TypeManager.validateTypes, fu
 	if self.typeName == "vehicle" then
 		for vehicleName, vehicleType in pairs(g_vehicleTypeManager.types) do
 			if  SpecializationUtil.hasSpecialization(FillUnit, vehicleType.specializations) and
-				SpecializationUtil.hasSpecialization(FillVolume, vehicleType.specializations) and
-				SpecializationUtil.hasSpecialization(Cover, vehicleType.specializations)
+				SpecializationUtil.hasSpecialization(FillVolume, vehicleType.specializations)
 			then
 				g_vehicleTypeManager:addSpecialization(vehicleName, BulkFill.modName .. '.bulkFill')
 			end
