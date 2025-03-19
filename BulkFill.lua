@@ -185,7 +185,7 @@ function BulkFill:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnor
 	
 end
 --
-function sortTriggersBySourceObjectId(w1,w2)
+function BulkFill.sortTriggersBySourceObjectId(w1,w2)
 
 	if w1.sourceObject:getFillUnitFillLevel(1) < w2.sourceObject:getFillUnitFillLevel(1) then
 		return true
@@ -227,7 +227,7 @@ function BulkFill:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 			else
 				-- print("TRIGGERS AVAILABLE")
 				if bf.lastNumberTriggers ~= #spec.fillTrigger.triggers then
-					local resortTriggers = #bf.orderedTriggers == 0
+					--local resortTriggers = #bf.orderedTriggers == 0
 					for _, trigger in ipairs(spec.fillTrigger.triggers) do
 						if bf.unorderedTriggers[trigger] == nil then
 							table.insert(bf.orderedTriggers, trigger)
@@ -248,9 +248,10 @@ function BulkFill:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 						end
 					end
 					
-					if resortTriggers then
-						table.sort(bf.orderedTriggers, sortTriggersBySourceObjectId)
-					end
+					--if resortTriggers then
+					-- GIANTS reported an error here but I can't reproduce it, so not sorting for now..
+						--table.sort(bf.orderedTriggers, BulkFill.sortTriggersBySourceObjectId)
+					--end
 					
 					if bf.selectedIndex > #bf.orderedTriggers then
 						-- print("CHANGING SELECTED INDEX BACK TO 1")
