@@ -78,7 +78,7 @@ Caratteristiche:
 
 	<inputBinding>
 		<actionBinding action="TOGGLE_BULK_FILL" >
-			<binding device="KB_MOUSE_DEFAULT" input="KEY_insert" />
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_backslash" />
 		</actionBinding>
 		<actionBinding action="TOGGLE_FILL_SELECT" >
 			<binding device="KB_MOUSE_DEFAULT" input="KEY_equals" />
