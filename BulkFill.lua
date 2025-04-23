@@ -20,6 +20,76 @@ BulkFill.INACTIVE_CB    = { 1.0, 0.9, 0.0, 0.9 }
 BulkFill.UNSUPPORTED_CB = { 1.0, 0.5, 0.5, 0.9 }
 BulkFill.UNSELECTED_CB  = { 1.0, 1.0, 1.0, 0.3 }
 
+
+-- FillUnit.onDelete = Utils.overwrittenFunction(FillUnit.onDelete,
+	-- function(self, superFunc)
+		-- local spec = self.spec_fillUnit
+		-- if spec.fillTrigger ~= nil then
+			-- g_currentMission.activatableObjectsSystem:removeActivatable(spec.fillTrigger.activatable)
+			-- for _, trigger in pairs(spec.fillTrigger.triggers) do
+				-- trigger:onVehicleDeleted(self)
+			-- end
+			-- spec.fillTrigger.currentTrigger = nil
+			-- spec.fillTrigger.selectedTrigger = nil
+		-- end
+		-- if spec.fillUnits ~= nil then
+			-- for _, fillUnit in ipairs(spec.fillUnits) do
+				-- for _, alarmTrigger in ipairs(fillUnit.alarmTriggers) do
+					-- g_soundManager:deleteSample(alarmTrigger.sample)
+				-- end
+				-- g_effectManager:deleteEffects(fillUnit.fillEffects)
+				-- g_animationManager:deleteAnimations(fillUnit.animationNodes)
+				-- if fillUnit.exactFillRootNode ~= nil then
+					-- g_currentMission:removeNodeObject(fillUnit.exactFillRootNode)
+				-- end
+			-- end
+		-- end
+		-- g_effectManager:deleteEffects(spec.fillEffects)
+		-- g_animationManager:deleteAnimations(spec.animationNodes)
+		-- if spec.samples ~= nil then
+			-- g_soundManager:deleteSamples(spec.samples)
+			-- table.clear(spec.samples)
+		-- end
+	-- end
+-- )
+
+FillUnit.setFillUnitIsFilling = Utils.overwrittenFunction(FillUnit.setFillUnitIsFilling,
+	function(self, superFunc, isFilling, noEventSend)
+
+		local spec = self.spec_fillUnit
+		if isFilling ~= spec.fillTrigger.isFilling then
+			if noEventSend == nil or noEventSend == false then
+				if g_server == nil then
+					g_client:getServerConnection():sendEvent(SetFillUnitIsFillingEvent.new(self, isFilling))
+				else
+					g_server:broadcastEvent(SetFillUnitIsFillingEvent.new(self, isFilling), nil, nil, self)
+				end
+			end
+			spec.fillTrigger.isFilling = isFilling
+			if isFilling then
+				spec.fillTrigger.currentTrigger = nil
+				for _, trigger in ipairs(spec.fillTrigger.triggers) do
+					if trigger:getIsActivatable(self) then
+						spec.fillTrigger.currentTrigger = trigger
+						trigger:setFillSoundIsPlaying(isFilling)
+						break
+					end
+				end
+			elseif spec.fillTrigger.currentTrigger ~= nil then
+				spec.fillTrigger.currentTrigger:setFillSoundIsPlaying(isFilling)
+				--spec.fillTrigger.currentTrigger = nil
+			end
+			if self.isClient then
+				self:setFillSoundIsPlaying(isFilling)
+			end
+			SpecializationUtil.raiseEvent(self, "onFillUnitIsFillingStateChanged", isFilling)
+			if not isFilling then
+				self:updateFillUnitTriggers()
+			end
+		end
+	end
+)
+
 function BulkFill.prerequisitesPresent(specializations)
 	return  SpecializationUtil.hasSpecialization(FillUnit, specializations) and
 			SpecializationUtil.hasSpecialization(FillVolume, specializations)
