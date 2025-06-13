@@ -20,76 +20,6 @@ BulkFill.INACTIVE_CB    = { 1.0, 0.9, 0.0, 0.9 }
 BulkFill.UNSUPPORTED_CB = { 1.0, 0.5, 0.5, 0.9 }
 BulkFill.UNSELECTED_CB  = { 1.0, 1.0, 1.0, 0.3 }
 
-
--- FillUnit.onDelete = Utils.overwrittenFunction(FillUnit.onDelete,
-	-- function(self, superFunc)
-		-- local spec = self.spec_fillUnit
-		-- if spec.fillTrigger ~= nil then
-			-- g_currentMission.activatableObjectsSystem:removeActivatable(spec.fillTrigger.activatable)
-			-- for _, trigger in pairs(spec.fillTrigger.triggers) do
-				-- trigger:onVehicleDeleted(self)
-			-- end
-			-- spec.fillTrigger.currentTrigger = nil
-			-- spec.fillTrigger.selectedTrigger = nil
-		-- end
-		-- if spec.fillUnits ~= nil then
-			-- for _, fillUnit in ipairs(spec.fillUnits) do
-				-- for _, alarmTrigger in ipairs(fillUnit.alarmTriggers) do
-					-- g_soundManager:deleteSample(alarmTrigger.sample)
-				-- end
-				-- g_effectManager:deleteEffects(fillUnit.fillEffects)
-				-- g_animationManager:deleteAnimations(fillUnit.animationNodes)
-				-- if fillUnit.exactFillRootNode ~= nil then
-					-- g_currentMission:removeNodeObject(fillUnit.exactFillRootNode)
-				-- end
-			-- end
-		-- end
-		-- g_effectManager:deleteEffects(spec.fillEffects)
-		-- g_animationManager:deleteAnimations(spec.animationNodes)
-		-- if spec.samples ~= nil then
-			-- g_soundManager:deleteSamples(spec.samples)
-			-- table.clear(spec.samples)
-		-- end
-	-- end
--- )
-
-FillUnit.setFillUnitIsFilling = Utils.overwrittenFunction(FillUnit.setFillUnitIsFilling,
-	function(self, superFunc, isFilling, noEventSend)
-
-		local spec = self.spec_fillUnit
-		if isFilling ~= spec.fillTrigger.isFilling then
-			if noEventSend == nil or noEventSend == false then
-				if g_server == nil then
-					g_client:getServerConnection():sendEvent(SetFillUnitIsFillingEvent.new(self, isFilling))
-				else
-					g_server:broadcastEvent(SetFillUnitIsFillingEvent.new(self, isFilling), nil, nil, self)
-				end
-			end
-			spec.fillTrigger.isFilling = isFilling
-			if isFilling then
-				spec.fillTrigger.currentTrigger = nil
-				for _, trigger in ipairs(spec.fillTrigger.triggers) do
-					if trigger:getIsActivatable(self) then
-						spec.fillTrigger.currentTrigger = trigger
-						trigger:setFillSoundIsPlaying(isFilling)
-						break
-					end
-				end
-			elseif spec.fillTrigger.currentTrigger ~= nil then
-				spec.fillTrigger.currentTrigger:setFillSoundIsPlaying(isFilling)
-				--spec.fillTrigger.currentTrigger = nil
-			end
-			if self.isClient then
-				self:setFillSoundIsPlaying(isFilling)
-			end
-			SpecializationUtil.raiseEvent(self, "onFillUnitIsFillingStateChanged", isFilling)
-			if not isFilling then
-				self:updateFillUnitTriggers()
-			end
-		end
-	end
-)
-
 function BulkFill.prerequisitesPresent(specializations)
 	return  SpecializationUtil.hasSpecialization(FillUnit, specializations) and
 			SpecializationUtil.hasSpecialization(FillVolume, specializations)
@@ -272,10 +202,8 @@ function BulkFill:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 			local bf = self.spec_bulkFill
 			local spec = self.spec_fillUnit
 			
-			-- I cannot find where this happens: when a container stops filling due to becoming full
-			if self.spec_bulkFill.isFilling ~= self.spec_fillUnit.fillTrigger.isFilling then
-				--print("'isFilling' was changed without us knowing..")
-				self.spec_bulkFill.isFilling = self.spec_fillUnit.fillTrigger.isFilling
+			if bf.isFilling ~= spec.fillTrigger.isFilling then
+				bf.isFilling = spec.fillTrigger.isFilling
 				bf.lastNumberTriggers = 0
 			end
 			
@@ -289,7 +217,7 @@ function BulkFill:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 				g_inputBinding:setActionEventActive(bf.cycleFwActionEventId, false)
 				g_inputBinding:setActionEventActive(bf.cycleBwActionEventId, false)
 				
-				if spec.fillTrigger.currentTrigger ~= nil then
+				if bf.currentTrigger ~= nil then
 					--print("STOP FILLING - NO TRIGGER")
 					self:stopFilling()
 				end
@@ -297,7 +225,7 @@ function BulkFill:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 			else
 				-- print("TRIGGERS AVAILABLE")
 				if bf.lastNumberTriggers ~= #spec.fillTrigger.triggers then
-					--local resortTriggers = #bf.orderedTriggers == 0
+					local originalSize = #bf.orderedTriggers
 					for _, trigger in ipairs(spec.fillTrigger.triggers) do
 						if bf.unorderedTriggers[trigger] == nil then
 							table.insert(bf.orderedTriggers, trigger)
@@ -318,10 +246,10 @@ function BulkFill:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 						end
 					end
 					
-					--if resortTriggers then
-					-- GIANTS reported an error here but I can't reproduce it, so not sorting for now..
-						--table.sort(bf.orderedTriggers, BulkFill.sortTriggersBySourceObjectId)
-					--end
+					if originalSize == 0 and #bf.orderedTriggers ~= originalSize then
+						-- GIANTS reported an error here but I can't reproduce it..
+						table.sort(bf.orderedTriggers, BulkFill.sortTriggersBySourceObjectId)
+					end
 					
 					if bf.selectedIndex > #bf.orderedTriggers then
 						-- print("CHANGING SELECTED INDEX BACK TO 1")
@@ -360,16 +288,16 @@ function BulkFill:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 					end
 				end
 
-				if spec.fillTrigger.currentTrigger ~= nil then
-					if bf.orderedTriggers[bf.selectedIndex]~=nil and bf.orderedTriggers[bf.selectedIndex]~=spec.fillTrigger.currentTrigger then
+				if bf.currentTrigger ~= nil then
+					if bf.orderedTriggers[bf.selectedIndex]~=nil and bf.orderedTriggers[bf.selectedIndex]~=bf.currentTrigger then
 						-- print("CURRENT TRIGGER HAS CHANGED")
-						if spec.fillTrigger.currentTrigger.sourceObject ~= nil then
-							if spec.fillTrigger.currentTrigger.sourceObject.isDeleted then
-								-- print("DELETED: "..tostring(spec.fillTrigger.currentTrigger.sourceObject.id))
+						if bf.currentTrigger.sourceObject ~= nil then
+							if bf.currentTrigger.sourceObject.isDeleted then
+								-- print("DELETED: "..tostring(bf.currentTrigger.sourceObject.id))
 
 								if bf.isEnabled then
 									local sourceObject = bf.orderedTriggers[bf.selectedIndex].sourceObject
-									local triggerObject = spec.fillTrigger.currentTrigger.sourceObject
+									local triggerObject = bf.currentTrigger.sourceObject
 									local nextFillType = sourceObject.spec_fillUnit.fillUnits[1].lastValidFillType
 									local previousFillType = triggerObject.spec_fillUnit.fillUnits[1].lastValidFillType
 									if nextFillType == previousFillType then
@@ -543,6 +471,7 @@ function BulkFill.FillActivatableRun(self, superFunc)
 	if bf~=nil and bf.isValid then
 		if spec.fillTrigger.isFilling then
 			--print("STARTED FILLING " .. tostring(spec.fillTrigger.currentTrigger.sourceObject.id))
+			bf.currentTrigger = spec.fillTrigger.currentTrigger
 			bf.isFilling = true
 		else
 			--print("CANCELED FILLING")
