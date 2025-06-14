@@ -203,6 +203,7 @@ function BulkFill:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 			local spec = self.spec_fillUnit
 			
 			if bf.isFilling ~= spec.fillTrigger.isFilling then
+				-- print("STOPPED FILLING")
 				bf.isFilling = spec.fillTrigger.isFilling
 				bf.lastNumberTriggers = 0
 			end
@@ -262,17 +263,28 @@ function BulkFill:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 					bf.lastSelectedIndex ~= bf.selectedIndex or
 					bf.lastNumberTriggers ~= #spec.fillTrigger.triggers)
 				then
-					-- print("VEHICLE HAS COVERS")
-					bf.lastCoverOpen = self.spec_cover.state
-					bf.lastSelectedIndex = bf.selectedIndex
-					bf.lastNumberTriggers = #spec.fillTrigger.triggers
+					local newCoverOpen = false
+					if bf.lastCoverOpen ~= self.spec_cover.state then
+						-- print("vehicle cover state changed " .. tostring(self.spec_cover.state))
+						bf.lastCoverOpen = self.spec_cover.state
+						newCoverOpen = self.spec_cover.state ~= 0
+					end
+					if bf.lastSelectedIndex ~= bf.selectedIndex then
+						-- print("last selected index changed " .. tostring(bf.selectedIndex))
+						bf.lastSelectedIndex = bf.selectedIndex
+					end
+					if bf.lastNumberTriggers ~= #spec.fillTrigger.triggers then
+						-- print("last number triggers changed " .. tostring(#spec.fillTrigger.triggers))
+						bf.lastNumberTriggers = #spec.fillTrigger.triggers
+					end
 					
 					local openCoverFillTypes = {}
 					if self.spec_cover.state ~= 0 then
-						for _, openCoverFillIndex in ipairs(self.spec_cover.covers[self.spec_cover.state].fillUnitIndices) do
+						for i, openCoverFillIndex in ipairs(self.spec_cover.covers[self.spec_cover.state].fillUnitIndices) do
+							-- print("[" .. tostring(i) .. "] openCoverFillIndex: " .. tostring(openCoverFillIndex))
 							if spec.fillUnits[openCoverFillIndex].fillLevel < spec.fillUnits[openCoverFillIndex].capacity then
 								for supportedFillType, _ in pairs(spec.fillUnits[openCoverFillIndex].supportedFillTypes) do
-									-- print("supportedFillType: " .. supportedFillType)
+									-- print("supportedFillType: " .. tostring(supportedFillType))
 									openCoverFillTypes[supportedFillType] = true
 								end
 							end
@@ -280,10 +292,17 @@ function BulkFill:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 					end
 
 					for index, trigger in ipairs(bf.orderedTriggers) do
+						-- print("  [" .. tostring(index) .. "] trigger: " .. tostring(trigger))
 						if trigger.sourceObject ~= nil then
 							local sourceObject = trigger.sourceObject
 							local objectFillType = sourceObject.spec_fillUnit.fillUnits[1].fillType
 							bf.canFillFrom[sourceObject.id] = openCoverFillTypes[objectFillType]
+							if newCoverOpen and bf.canFillFrom[sourceObject.id] then
+								-- print("new cover opened - change index to " .. tostring(index))
+								newCoverOpen = false
+								bf.selectedIndex = index
+							end
+							-- print("  sourceObject " .. tostring(sourceObject.id) .. " (" .. tostring(objectFillType) .. ") can fill = " .. tostring(bf.canFillFrom[sourceObject.id]))
 						end
 					end
 				end
@@ -504,6 +523,7 @@ end
 
 function BulkFill:stopFilling(noEventSend)
 	self.spec_fillUnit.fillTrigger.currentTrigger = nil
+	self.spec_bulkFill.currentTrigger = nil
 	self.spec_bulkFill.isFilling = false
 	self.spec_bulkFill.lastRequestedIndex = 0
 	

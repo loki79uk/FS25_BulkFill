@@ -17,6 +17,7 @@ function StopFillingEvent:readStream(streamId, connection)
 	if not connection:getIsServer() then
 		self.object = NetworkUtil.readNodeObject(streamId)
 		self.object.spec_bulkFill.isFilling = false
+		self.object.spec_bulkFill.currentTrigger = nil
 		self.object.spec_fillUnit.fillTrigger.currentTrigger = nil
 	end
 	self:run(connection)
