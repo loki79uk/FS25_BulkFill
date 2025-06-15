@@ -301,6 +301,9 @@ function BulkFill:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 								-- print("new cover opened - change index to " .. tostring(index))
 								newCoverOpen = false
 								bf.selectedIndex = index
+								bf.currentTrigger = trigger
+								spec.fillTrigger.currentTrigger = trigger
+								spec.fillTrigger.activatable:setFillType(objectFillType)
 							end
 							-- print("  sourceObject " .. tostring(sourceObject.id) .. " (" .. tostring(objectFillType) .. ") can fill = " .. tostring(bf.canFillFrom[sourceObject.id]))
 						end
